@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>IQ Test | Free Online Intelligence Test with Instant Score</title>
-<meta name="description" content="A free 38-item IQ test scored with a 3-parameter item response model calibrated to published difficulty data. Get your IQ score, percentile and full cognitive profile in 35 minutes.">
+<meta name="description" content="A free 46-item IQ test scored with a 3-parameter item response model calibrated to published difficulty data. Get your IQ score, percentile and full cognitive profile in 45 minutes.">
 <meta name="color-scheme" content="light dark">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧠</text></svg>">
 <style>
@@ -220,7 +220,7 @@
   <div class="bar-in">
     <div class="bar-row">
       <div class="bar-title">IQ Test</div>
-      <div class="bar-meta"><span id="counter">1 / 38</span><span id="clock">35:00</span></div>
+      <div class="bar-meta"><span id="counter">1 / 46</span><span id="clock">45:00</span></div>
     </div>
     <div class="rail" id="rail"></div>
   </div>
@@ -229,16 +229,16 @@
 <main>
   <section class="shell" id="intro">
     <div class="hero">
-      <div class="eyebrow">38 items &middot; 35 minutes &middot; instant score</div>
+      <div class="eyebrow">46 items &middot; 45 minutes &middot; instant score</div>
       <h1>Find out your IQ.</h1>
-      <p class="lede">Thirty-eight items across the four cognitive domains measured by the current Wechsler scale. Scored with a three-parameter item response model calibrated to published difficulty data, so a hard item counts for more than an easy one. You get a score, a percentile, and a full breakdown.</p>
+      <p class="lede">Forty-six items across the four cognitive domains measured by the current Wechsler scale. Scored with a three-parameter item response model calibrated to published difficulty data, so a hard item counts for more than an easy one. You get a score, a percentile, and a full breakdown.</p>
     </div>
 
     <div class="spec">
-      <div><b>38</b><span>Items</span></div>
+      <div><b>46</b><span>Items</span></div>
       <div><b>4</b><span>Domains</span></div>
       <div><b>3PL</b><span>IRT scoring</span></div>
-      <div><b>35</b><span>Minutes</span></div>
+      <div><b>45</b><span>Minutes</span></div>
     </div>
 
     <div class="method">
@@ -255,7 +255,7 @@
       <div class="opts-row">
         <span class="eyebrow" style="margin-right:0.3rem;">Mode</span>
         <div class="toggle" role="group" aria-label="Test mode">
-          <button id="mTimed" aria-pressed="true">35 min timer</button>
+          <button id="mTimed" aria-pressed="true">45 min timer</button>
           <button id="mFree" aria-pressed="false">Untimed</button>
         </div>
       </div>
@@ -326,6 +326,21 @@
   function fGlyph(rot, mir) { return svg('<g transform="translate(50,50) scale(0.82) rotate(' + rot + ') scale(' + (mir ? -1 : 1) + ',1)"><polygon class="s-fill" points="' + F_PTS + '"/></g>'); }
   function foldStep1() { return svg('<rect class="s-stroke" x="14" y="14" width="72" height="72"/><line class="s-dash" x1="50" y1="14" x2="50" y2="86"/><path class="s-stroke" d="M 26 50 L 44 50" stroke-width="2"/><path class="s-fill" d="M 44 45 L 54 50 L 44 55 Z"/>'); }
   function foldStep2() { return svg('<rect class="s-stroke" x="50" y="14" width="36" height="72"/><line class="s-dash" x1="50" y1="14" x2="50" y2="86"/><circle class="s-hole" cx="68" cy="38" r="7"/>'); }
+  // second fold: the half sheet, now folding top down to bottom
+  function foldStep2b() { return svg('<rect class="s-stroke" x="50" y="14" width="36" height="72"/><line class="s-dash" x1="50" y1="50" x2="86" y2="50"/><path class="s-stroke" d="M 68 26 L 68 44" stroke-width="2"/><path class="s-fill" d="M 63 44 L 68 54 L 73 44 Z"/>'); }
+  // folded to a quarter, one punch through all four layers
+  function foldStep3b() { return svg('<rect class="s-stroke" x="50" y="50" width="36" height="36"/><circle class="s-hole" cx="68" cy="62" r="7"/>'); }
+
+  // spokes at named compass directions, for the exclusive-or matrix
+  var DIRS = { N: -90, E: 0, S: 90, W: 180 };
+  function spokeSet(names) {
+    var out = '<circle class="s-fill" cx="50" cy="50" r="3.5"/>';
+    names.forEach(function (nm) {
+      var a = DIRS[nm] * Math.PI / 180;
+      out += '<line class="s-stroke" x1="50" y1="50" x2="' + (50 + 34 * Math.cos(a)).toFixed(2) + '" y2="' + (50 + 34 * Math.sin(a)).toFixed(2) + '"/>';
+    });
+    return svg(out);
+  }
   function unfolded(h) { return svg('<rect class="s-stroke" x="14" y="14" width="72" height="72"/>' + h.map(function (p) { return '<circle class="s-hole" cx="' + p[0] + '" cy="' + p[1] + '" r="7"/>'; }).join('')); }
   function seq(f) { return '<div class="seq">' + f.map(function (x) { return '<div>' + x + '</div>'; }).join('') + '</div>'; }
   function mtx(f) { return '<div class="mtx">' + f.map(function (x) { return '<div>' + x + '</div>'; }).join('') + '</div>'; }
@@ -342,7 +357,8 @@
     { key: 'vs', name: 'Visual Spatial', short: 'Spatial', tag: 'Gv',
       from: 'Matrix completion after <b>Raven&rsquo;s Progressive Matrices</b> (1938), the closest thing psychometrics has to a language-free measure of reasoning, plus <b>mental rotation</b> (Shepard &amp; Metzler, 1971) and paper folding. Measures <b>Gv</b>.' }
   ];
-  var DIFF_LABEL = { 1: 'Easy', 2: 'Moderate', 3: 'Hard', 4: 'Very hard' };
+  var DIFF_LABEL = { 1: 'Easy', 2: 'Moderate', 3: 'Hard', 4: 'Very hard', 5: 'Extreme' };
+  var DIFF_LEVELS = [1, 2, 3, 4, 5];
 
   /* ===================== items =====================
      p = proportion of the adult population expected to answer correctly.
@@ -455,8 +471,62 @@
       stem: function () { return seq([foldStep1(), foldStep2(), qmark()]); },
       figs: function () { return [unfolded([[68, 38], [32, 38]]), unfolded([[68, 38], [68, 62]]), unfolded([[50, 38]]), unfolded([[68, 38], [80, 38]])]; },
       o: ['A', 'B', 'C', 'D'], a: 0,
-      e: 'The punch goes through both layers, so unfolding produces <b>two holes at the same height, mirrored across the vertical fold line</b>. Option B mirrors across the wrong axis: the fold was vertical, so the holes must share a height.' }
+      e: 'The punch goes through both layers, so unfolding produces <b>two holes at the same height, mirrored across the vertical fold line</b>. Option B mirrors across the wrong axis: the fold was vertical, so the holes must share a height.' },
+
+    /* ================= CEILING ITEMS =================
+       Very low pass rates. These exist so the test can discriminate
+       above +2.5 SD, which is what a score of 140 or higher requires.
+    ================================================== */
+
+    { s: 'fr', d: 5, p: 0.20, q: 'A family has two children. You are told at least one of them is a boy. What is the probability that both are boys?', o: ['1/2', '1/3', '2/3', '1/4', '3/4'], a: 1,
+      e: 'List the equally likely families: BB, BG, GB, GG. "At least one boy" rules out GG, leaving three cases, of which only BB has two boys. So the answer is <b>1/3</b>. The intuitive 1/2 comes from treating the other child as an independent coin flip, but the information you were given is about the pair, not about a specific child.' },
+
+    { s: 'fr', d: 5, p: 0.13, q: 'Three doors hide one car and two goats. You pick door 1. The host, who knows what is behind every door and will always open a losing door, opens door 3 to reveal a goat. Should you switch to door 2?', o: ['No, it is now 50/50', 'Yes, switching wins 2/3 of the time', 'No, switching wins 1/3 of the time', 'It makes no difference either way', 'Yes, switching wins 3/4 of the time'], a: 1,
+      e: 'Your first pick was right 1/3 of the time and wrong 2/3 of the time. The host never opens the car door, so when your first pick was wrong, which is 2/3 of the time, the remaining door is always the car. <b>Switching wins 2/3 of the time.</b> The host&rsquo;s knowledge is what breaks the symmetry; if he opened a door at random it really would be 50/50.' },
+
+    { s: 'fr', d: 5, p: 0.15, q: 'Linda is 31, single, outspoken and very bright. She studied philosophy and was deeply concerned with discrimination and social justice. Which is more probable?', o: ['Linda is a bank teller', 'Linda is a bank teller and active in the feminist movement', 'They are exactly equally probable', 'There is not enough information', 'Neither can be probable'], a: 0,
+      e: 'Every feminist bank teller is also a bank teller, so the group described in option 2 is contained inside the group described in option 1. A subset can never be more probable than the set containing it, so <b>option 1</b> must be at least as probable. Tversky and Kahneman found roughly 85% of people pick option 2 because it fits the description better. Representativeness is not probability.' },
+
+    { s: 'fr', d: 5, p: 0.10, q: 'A disease affects 1 in 1,000 people. A test is positive for 100% of those who have it, and also gives a false positive for 5% of healthy people. You test positive, with no other information. Roughly what is the chance you have the disease?', o: ['About 95%', 'About 2%', 'About 50%', 'About 80%', 'About 20%'], a: 1,
+      e: 'Take 100,000 people. About 100 have the disease and all 100 test positive. Of the 99,900 healthy people, 5% is about 4,995 who also test positive. So roughly 5,095 positives, of whom 100 are genuinely ill: <b>about 2%</b>. The base rate dominates because the disease is rare. Most people answer 95%, effectively ignoring how uncommon the condition is.' },
+
+    { s: 'qr', d: 5, p: 0.12, q: 'What continues the series?  1, 11, 21, 1211, 111221, ?', o: ['211231', '312211', '1112221', '122113', '221114'], a: 1,
+      e: 'Each term describes the one before it out loud. 1 is "one 1" &rarr; 11. 11 is "two 1s" &rarr; 21. 21 is "one 2, one 1" &rarr; 1211. 111221 reads as "three 1s, two 2s, one 1" &rarr; <b>312211</b>. This is the look-and-say sequence, and it defeats people who look only for arithmetic rules.' },
+
+    { s: 'qr', d: 5, p: 0.22, q: 'A lily pad patch doubles in size every day. It covers the whole lake on day 48. On what day did it cover half the lake?', o: ['Day 24', 'Day 47', 'Day 46', 'Day 12', 'Day 32'], a: 1,
+      e: 'If it doubles every day, then the day before it was full it must have been exactly half: <b>day 47</b>. The intuitive answer of day 24 assumes linear growth. This is the third item on Frederick&rsquo;s Cognitive Reflection Test.' },
+
+    { s: 'vs', d: 5, p: 0.18, q: 'In each row, the third figure is built from the first two by a consistent rule. Which figure completes the bottom row?',
+      stem: function () {
+        return mtx([
+          spokeSet(['N', 'S']), spokeSet(['S', 'W']), spokeSet(['N', 'W']),
+          spokeSet(['E', 'W']), spokeSet(['N', 'W']), spokeSet(['E', 'N']),
+          spokeSet(['N', 'E', 'S']), spokeSet(['E', 'S']), qmark()
+        ]);
+      },
+      figs: function () { return [spokeSet(['N', 'E']), spokeSet(['N']), spokeSet(['E', 'S']), spokeSet(['N', 'E', 'S'])]; },
+      o: ['A', 'B', 'C', 'D'], a: 1,
+      e: 'The rule is <b>exclusive or</b>: a spoke appears in the third figure only if it appears in exactly one of the first two, so shared spokes cancel out. Bottom row: {N, E, S} against {E, S} shares E and S, which both cancel, leaving <b>N alone</b>. Checking row one confirms it: {N, S} against {S, W} cancels S and leaves {N, W}.' },
+
+    { s: 'vs', d: 5, p: 0.22, q: 'A square sheet is folded in half left to right, then folded in half top to bottom. One hole is punched through all four layers. What does the sheet look like unfolded?',
+      stem: function () { return seq([foldStep1(), foldStep2b(), foldStep3b(), qmark()]); },
+      figs: function () {
+        return [
+          unfolded([[32, 38], [68, 38], [32, 62], [68, 62]]),
+          unfolded([[68, 38], [32, 38]]),
+          unfolded([[68, 62], [68, 38]]),
+          unfolded([[32, 38], [68, 38], [50, 62]])
+        ];
+      },
+      o: ['A', 'B', 'C', 'D'], a: 0,
+      e: 'Two folds means <b>four layers</b>, so one punch makes four holes. Unfolding the horizontal fold mirrors the hole across the horizontal centre line, and unfolding the vertical fold mirrors both across the vertical centre line. The result is <b>four holes in a symmetric rectangle</b>, one in each quadrant. Options B and C only unfold one of the two folds.' }
   ];
+
+  /* group by domain, then run easy to hard within each */
+  var SEC_ORDER = { vc: 0, fr: 1, qr: 2, vs: 3 };
+  Q.sort(function (a, b) {
+    return (SEC_ORDER[a.s] - SEC_ORDER[b.s]) || (a.d - b.d) || (b.p - a.p);
+  });
 
   /* ===================== IRT engine =====================
      3PL:  P(theta) = c + (1-c) / (1 + exp(-1.7 (theta - b)))
@@ -537,18 +607,30 @@
     if (v >= 70) return 'Borderline';
     return 'Well below average';
   }
-  function rarity(pct) {
-    var tail = pct >= 50 ? (100 - pct) : pct;
-    if (tail < 0.5) return 'fewer than 1 in 200 people';
-    var n = Math.round(100 / Math.max(tail, 0.5));
-    if (n <= 2) return 'about half of people';
-    return 'about 1 in ' + n + ' people';
+  // 1st, 2nd, 3rd, 4th, 21st ...
+  function ord(n) {
+    var s = ['th', 'st', 'nd', 'rd'], v = n % 100;
+    return n + (s[(v - 20) % 10] || s[v] || s[0]);
+  }
+  // p is an unclamped percentile 0-100; keep a decimal at the extremes
+  // because the difference between 99th and 99.8th is a factor of ten in rarity
+  function pctLabel(p) {
+    if (p >= 99) return Math.min(99.9, Math.round(p * 10) / 10).toFixed(1) + 'th';
+    if (p <= 1) return 'below the 1st';
+    return ord(Math.round(p));
+  }
+  function rarity(p) {
+    var tail = Math.max(p >= 50 ? (100 - p) : p, 0.05);
+    var n = 100 / tail;
+    var r = n >= 100 ? Math.round(n / 10) * 10 : Math.round(n);
+    if (r <= 2) return 'about 1 in 2 people';
+    return 'about 1 in ' + r.toLocaleString() + ' people';
   }
 
   /* ===================== state ===================== */
   var answers = new Array(Q.length).fill(null);
   var flags = new Array(Q.length).fill(false);
-  var cur = 0, timed = true, remaining = 35 * 60, ticker = null, finished = false, advance = null;
+  var cur = 0, timed = true, remaining = 45 * 60, ticker = null, finished = false, advance = null;
   function cancelAdvance() { if (advance) { clearTimeout(advance); advance = null; } }
 
   var $ = function (id) { return document.getElementById(id); };
@@ -584,7 +666,7 @@
   }
   function diffDots(d) {
     var out = '<em>' + DIFF_LABEL[d] + '</em>', i;
-    for (i = 1; i <= 4; i++) out += '<i class="' + (i <= d ? 'on' : '') + '"></i>';
+    for (i = 1; i <= 5; i++) out += '<i class="' + (i <= d ? 'on' : '') + '"></i>';
     return out;
   }
   function render() {
@@ -724,16 +806,20 @@
     var iq = Math.round(100 + 15 * est.theta);
     var seIQ = 15 * est.se;
     var lo = Math.round(iq - 1.96 * seIQ), hi = Math.round(iq + 1.96 * seIQ);
-    var pctile = Math.max(1, Math.min(99, Math.round(normCdf(est.theta) * 100)));
+    var pctRaw = normCdf(est.theta) * 100;
+    var pctile = pctLabel(pctRaw);
+    var higherThan = pctRaw >= 99 ? Math.min(99.9, Math.round(pctRaw * 10) / 10).toFixed(1)
+                   : pctRaw <= 1 ? Math.max(0.1, Math.round(pctRaw * 10) / 10).toFixed(1)
+                   : Math.round(pctRaw);
 
-    var bySec = {}, byDiff = { 1: [0, 0], 2: [0, 0], 3: [0, 0], 4: [0, 0] }, i;
+    var bySec = {}, byDiff = { 1: [0, 0], 2: [0, 0], 3: [0, 0], 4: [0, 0], 5: [0, 0] }, i;
     SECTIONS.forEach(function (s) { bySec[s.key] = { got: 0, tot: 0 }; });
     for (i = 0; i < Q.length; i++) {
       bySec[Q[i].s].tot++; byDiff[Q[i].d][1]++;
       if (resp[i]) { bySec[Q[i].s].got++; byDiff[Q[i].d][0]++; }
     }
 
-    var used = timed ? (35 * 60 - remaining) : null;
+    var used = timed ? (45 * 60 - remaining) : null;
     var timeStr = used === null ? 'Untimed' : Math.floor(used / 60) + ' min ' + pad(used % 60) + ' sec';
 
     var secBars = SECTIONS.map(function (s) {
@@ -745,7 +831,7 @@
       var d = bySec[s.key];
       return '<div class="prov"><div class="prov-h"><b>' + s.name + ' <span style="color:var(--ink-3)">(' + s.tag + ')</span></b><span>' + d.got + ' / ' + d.tot + '</span></div><p>' + s.from + '</p></div>';
     }).join('');
-    var dRows = [1, 2, 3, 4].map(function (d) {
+    var dRows = DIFF_LEVELS.filter(function (d) { return byDiff[d][1] > 0; }).map(function (d) {
       var g = byDiff[d][0], t = byDiff[d][1], pc = Math.round(g / t * 100);
       return '<tr><td class="n">' + DIFF_LABEL[d] + '</td><td class="n">' + g + ' / ' + t + '</td><td style="width:55%"><div class="track"><i style="width:' + pc + '%"></i></div></td><td class="n">' + pc + '%</td></tr>';
     }).join('');
@@ -774,13 +860,13 @@
         '<div class="lbl">Your IQ score</div>' +
         '<div class="iqnum">' + iq + '</div>' +
         '<div class="band">' + bandName(iq) + '</div>' +
-        '<p class="pct">You scored higher than <b>' + pctile + '%</b> of the population. A score of ' + iq + ' is reached by ' + rarity(pctile) + '.</p>' +
+        '<p class="pct">You scored higher than <b>' + higherThan + '%</b> of the population. A score of ' + iq + ' is reached by ' + rarity(pctRaw) + '.</p>' +
         '<div class="quote-line">95% confidence interval ' + lo + '&ndash;' + hi + ' &nbsp;&middot;&nbsp; ' + correct + ' of ' + Q.length + ' correct &nbsp;&middot;&nbsp; ' + timeStr + (byTimeout ? ' &nbsp;&middot;&nbsp; time expired' : '') + '</div>' +
       '</div>' +
 
       '<div class="stat-row">' +
         '<div class="stat"><span class="eyebrow">IQ</span><span class="v">' + iq + '</span></div>' +
-        '<div class="stat"><span class="eyebrow">Percentile</span><span class="v">' + pctile + 'th</span></div>' +
+        '<div class="stat"><span class="eyebrow">Percentile</span><span class="v">' + pctile + '</span></div>' +
         '<div class="stat"><span class="eyebrow">Classification</span><span class="v" style="font-size:1.1rem">' + bandName(iq) + '</span></div>' +
         '<div class="stat"><span class="eyebrow">Raw score</span><span class="v">' + correct + '/' + Q.length + '</span></div>' +
       '</div>' +

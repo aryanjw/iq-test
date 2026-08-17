@@ -1,6 +1,6 @@
 # IQ Test
 
-A free, self-contained online IQ test. 38 items across the four cognitive domains
+A free, self-contained online IQ test. 46 items across the four cognitive domains
 used by the WAIS-5: Verbal Comprehension, Fluid Reasoning, Quantitative Reasoning
 and Visual Spatial.
 
@@ -25,6 +25,10 @@ Difficulties are anchored to published pass rates where they exist:
 | Wason selection task | 19% | meta-analysis of the abstract task |
 | Bat and ball | 25% | Frederick, Cognitive Reflection Test (2005) |
 | Widgets / machines | 30% | Frederick, Cognitive Reflection Test (2005) |
+| Lily pad / doubling | 22% | Frederick, Cognitive Reflection Test (2005) |
+| Monty Hall | 13% | classic replication rate |
+| Conjunction fallacy (Linda) | 15% | Tversky & Kahneman |
+| Base rate neglect | 10% | classic replication rate |
 
 Remaining items are calibrated on the same scale relative to those anchors.
 
