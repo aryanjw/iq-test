@@ -472,7 +472,7 @@
       e: 'This is <b>modus tollens</b>. If rain guarantees cancellation, then no cancellation guarantees no rain. Denying the consequent lets you deny the antecedent.' },
     { s: 'fr', d: 2, p: 0.70, q: 'The statement "Not all students passed" is logically equivalent to:', o: ['No students passed', 'At least one student failed', 'Most students failed', 'All students failed', 'Exactly half failed'], a: 1,
       e: 'The negation of "all passed" is "at least one did not pass". It says nothing about how many. Every other option smuggles in a quantity.' },
-    { s: 'fr', d: 2, p: 0.66, q: 'Five runners finish a race. C finishes before A. A finishes before B. D finishes after B. E finishes last. Who wins?', o: ['A', 'B', 'C', 'D', 'E'], a: 2,
+    { s: 'fr', d: 2, p: 0.66, q: 'Five runners finish a race. C finishes before A. A finishes before B. D finishes after B. E finishes last. Who wins?', o: ['Runner A', 'Runner B', 'Runner C', 'Runner D', 'Runner E'], a: 2,
       e: 'Chaining the constraints gives C &lt; A &lt; B &lt; D, with E last. <b>C</b> sits at the head of the chain.' },
     { s: 'fr', d: 2, p: 0.64, q: 'Some doctors are surgeons. All surgeons are trained in anatomy. Which must be true?', o: ['All doctors are surgeons', 'Some doctors are trained in anatomy', 'Everyone trained in anatomy is a surgeon', 'No doctor lacks anatomy training', 'Most doctors are surgeons'], a: 1,
       e: 'At least one doctor is a surgeon, and every surgeon has anatomy training, so at least one doctor has it. Every other option claims more than the premises allow.' },
@@ -959,9 +959,12 @@
     var LET = ['A', 'B', 'C', 'D', 'E'];
     var review = Q.map(function (q, n) {
       var ok = resp[n] === 1;
-      // figure items use A/B/C/D as their option text, so don't print the letter twice
-      var isFig = !!q.figs;
-      var label = function (idx) { return isFig ? 'Option ' + LET[idx] : LET[idx] + '. ' + q.o[idx]; };
+      // figure items use A/B/C/D as their option text, and a couple of text items
+      // label their choices with bare letters too, so don't print the letter twice
+      var label = function (idx) {
+        var t = q.o[idx];
+        return (q.figs || t === LET[idx]) ? 'Option ' + LET[idx] : LET[idx] + '. ' + t;
+      };
       var yours = answers[n] === null ? 'Not answered' : label(answers[n]);
       var right = label(q.a);
       var fig = q.figs ? ((q.stem && q.stem() ? '<div>' + q.stem() + '</div>' : '') + fourup(q.figs())) : (q.stem ? q.stem() : '');
