@@ -67,9 +67,61 @@
   .rail i.here { background: var(--ink); }
   .rail i.flag { background: var(--warn); }
 
-  .hero { padding: 4.5rem 0 2.5rem; display: flex; flex-direction: column; gap: 1.4rem; }
-  .hero h1 { font-size: clamp(2.6rem, 8vw, 4rem); line-height: 1.0; letter-spacing: -0.015em; }
-  .hero p.lede { font-size: 1.15rem; color: var(--ink-2); max-width: 34rem; }
+  /* ---------- hero: a measurement instrument, committed dark in both themes ---------- */
+  .hero {
+    position: relative;
+    isolation: isolate;
+    margin: 1.6rem 0 0;
+    padding: 3.4rem 1.6rem 0;
+    background: #0E1519;
+    color: #EAF0F2;
+    border: 1px solid #1E2A31;
+    overflow: hidden;
+    display: flex; flex-direction: column; gap: 1.2rem;
+  }
+  /* graph paper */
+  .hero::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background-image:
+      repeating-linear-gradient(to right, rgba(76,187,209,0.07) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(to bottom, rgba(76,187,209,0.07) 0 1px, transparent 1px 44px);
+  }
+  .hero::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(120% 80% at 18% 0%, rgba(76,187,209,0.16), transparent 62%);
+  }
+  .hero .eyebrow { color: #6E8791; }
+  .hero h1 {
+    font-size: clamp(2.7rem, 8.5vw, 4.4rem);
+    line-height: 0.98; letter-spacing: -0.02em; color: #F4F8F9;
+    max-width: 18ch;
+  }
+  .hero h1 em { font-style: normal; color: #4CBBD1; }
+  .hero p.lede { font-size: 1.1rem; color: #A8B8C0; max-width: 36rem; }
+  .hero-curve { margin: 0.4rem -1.6rem 0; display: block; width: calc(100% + 3.2rem); height: auto; }
+  .hero-curve .hc-line { fill: none; stroke: #4CBBD1; stroke-width: 2.2; }
+  .hero-curve .hc-fill { fill: url(#hcgrad); }
+  .hero-curve .hc-tick { stroke: #2C3D45; stroke-width: 1; }
+  .hero-curve .hc-lab { fill: #6E8791; font-family: var(--mono); font-size: 11px; text-anchor: middle; }
+  .hero-curve .hc-lab.hi { fill: #4CBBD1; }
+  .hero-curve .hc-base { stroke: #2C3D45; stroke-width: 1; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .hero-curve .hc-line { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: draw 1.5s 0.15s cubic-bezier(.4,0,.2,1) forwards; }
+    .hero-curve .hc-fill { opacity: 0; animation: fade 1s 0.9s ease forwards; }
+    .hero h1, .hero p.lede, .hero .eyebrow { animation: rise 0.7s cubic-bezier(.2,.7,.3,1) backwards; }
+    .hero .eyebrow { animation-delay: 0.05s; }
+    .hero h1 { animation-delay: 0.14s; }
+    .hero p.lede { animation-delay: 0.24s; }
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes fade { to { opacity: 1; } }
+  @keyframes rise { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+  /* small bell-curve wordmark in the sticky bar */
+  .mark { display: inline-flex; align-items: center; gap: 0.5rem; }
+  .mark svg { width: 22px; height: 12px; overflow: visible; }
+  .mark svg path { fill: none; stroke: var(--accent); stroke-width: 2; }
 
   .spec { border-top: 1px solid var(--rule); display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); }
   .spec div { border-bottom: 1px solid var(--rule); border-right: 1px solid var(--rule); padding: 0.9rem 0.9rem 1rem; display: flex; flex-direction: column; gap: 0.25rem; }
@@ -142,12 +194,37 @@
   .fourup > div span { position: absolute; top: 3px; left: 5px; font-family: var(--mono); font-size: 0.6rem; color: var(--ink-3); }
 
   /* ---------- results ---------- */
-  .score-card { margin-top: 3rem; border: 1px solid var(--rule); background: var(--surface); padding: 2.5rem 1.5rem 2rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
-  .score-card .lbl { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-3); }
-  .iqnum { font-family: var(--display); font-size: clamp(5.5rem, 22vw, 10rem); line-height: 0.86; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; color: var(--accent); }
-  .score-card .band { font-family: var(--display); font-size: 1.6rem; margin-top: 0.4rem; }
-  .score-card .pct { font-size: 1.02rem; color: var(--ink-2); max-width: 30rem; }
-  .quote-line { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid var(--rule-2); width: 100%; font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); letter-spacing: 0.04em; }
+  .score-card {
+    position: relative; isolation: isolate; overflow: hidden;
+    margin-top: 2.4rem; border: 1px solid #1E2A31; background: #0E1519; color: #EAF0F2;
+    padding: 3rem 1.5rem 2rem; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 0.4rem;
+  }
+  .score-card::before {
+    content: ""; position: absolute; inset: 0; z-index: -2;
+    background-image:
+      repeating-linear-gradient(to right, rgba(76,187,209,0.07) 0 1px, transparent 1px 44px),
+      repeating-linear-gradient(to bottom, rgba(76,187,209,0.07) 0 1px, transparent 1px 44px);
+  }
+  .score-card::after {
+    content: ""; position: absolute; inset: 0; z-index: -1;
+    background: radial-gradient(90% 70% at 50% 0%, rgba(76,187,209,0.22), transparent 65%);
+  }
+  .score-card .lbl { font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.2em; text-transform: uppercase; color: #6E8791; }
+  .iqnum {
+    font-family: var(--display); font-size: clamp(6rem, 24vw, 11rem);
+    line-height: 0.84; letter-spacing: -0.035em; font-variant-numeric: tabular-nums;
+    color: #4CBBD1; text-shadow: 0 0 44px rgba(76,187,209,0.45);
+  }
+  .score-card .band { font-family: var(--display); font-size: 1.7rem; margin-top: 0.5rem; color: #F4F8F9; }
+  .score-card .pct { font-size: 1.02rem; color: #A8B8C0; max-width: 32rem; }
+  .score-card .pct b { color: #F4F8F9; }
+  .quote-line { margin-top: 1.4rem; padding-top: 1.2rem; border-top: 1px solid #1E2A31; width: 100%; font-family: var(--mono); font-size: 0.78rem; color: #6E8791; letter-spacing: 0.04em; }
+  @media (prefers-reduced-motion: no-preference) {
+    .iqnum { animation: pop 0.7s cubic-bezier(.2,.8,.3,1) backwards; }
+    .score-card .band, .score-card .pct { animation: rise 0.6s 0.25s cubic-bezier(.2,.7,.3,1) backwards; }
+  }
+  @keyframes pop { from { opacity: 0; transform: scale(0.9); } to { opacity: 1; transform: none; } }
 
   .stat-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 1px; background: var(--rule); border: 1px solid var(--rule); margin-top: 1rem; }
   .stat { background: var(--surface); padding: 0.9rem 1rem 1rem; display: flex; flex-direction: column; gap: 0.2rem; }
@@ -219,7 +296,7 @@
 <header class="bar" id="bar" hidden>
   <div class="bar-in">
     <div class="bar-row">
-      <div class="bar-title">IQ Test</div>
+      <div class="bar-title mark"><svg viewBox="0 0 44 20" aria-hidden="true"><path d="M1 18 C 10 18, 13 3, 22 3 C 31 3, 34 18, 43 18"/></svg>IQ Test</div>
       <div class="bar-meta"><span id="counter">1 / 46</span><span id="clock">45:00</span></div>
     </div>
     <div class="rail" id="rail"></div>
@@ -230,8 +307,9 @@
   <section class="shell" id="intro">
     <div class="hero">
       <div class="eyebrow">46 items &middot; 45 minutes &middot; instant score</div>
-      <h1>Find out your IQ.</h1>
+      <h1>Your intelligence, <em>on the scale</em> everyone quotes.</h1>
       <p class="lede">Forty-six items across the four cognitive domains measured by the current Wechsler scale. Scored with a three-parameter item response model calibrated to published difficulty data, so a hard item counts for more than an easy one. You get a score, a percentile, and a full breakdown.</p>
+      <div id="heroCurve"></div>
     </div>
 
     <div class="spec">
@@ -737,6 +815,42 @@
   }
   $('mTimed').addEventListener('click', function () { timed = true; $('mTimed').setAttribute('aria-pressed', 'true'); $('mFree').setAttribute('aria-pressed', 'false'); });
   $('mFree').addEventListener('click', function () { timed = false; $('mFree').setAttribute('aria-pressed', 'true'); $('mTimed').setAttribute('aria-pressed', 'false'); });
+  // hero: the IQ scale drawn as the instrument it is
+  (function heroCurve() {
+    var host = $('heroCurve');
+    if (!host) return;
+    var W = 760, H = 150, PAD = 26, BASE = H - 30, zMin = -3.3, zMax = 3.3, i, z;
+    function px(zz) { return PAD + (zz - zMin) / (zMax - zMin) * (W - 2 * PAD); }
+    function py(v) { return BASE - v * (BASE - 14); }
+
+    var line = [], fill = 'M ' + px(zMin).toFixed(1) + ',' + BASE + ' ';
+    for (i = 0; i <= 300; i++) {
+      z = zMin + (zMax - zMin) * i / 300;
+      line.push(px(z).toFixed(1) + ',' + py(Math.exp(-0.5 * z * z)).toFixed(1));
+      fill += 'L ' + px(z).toFixed(1) + ',' + py(Math.exp(-0.5 * z * z)).toFixed(1) + ' ';
+    }
+    fill += 'L ' + px(zMax).toFixed(1) + ',' + BASE + ' Z';
+
+    var ticks = '';
+    for (i = -3; i <= 3; i++) {
+      var iqv = 100 + i * 15;
+      ticks += '<line class="hc-tick" x1="' + px(i).toFixed(1) + '" y1="' + BASE + '" x2="' + px(i).toFixed(1) + '" y2="' + (BASE + 6) + '"/>' +
+        '<text class="hc-lab' + (iqv >= 130 ? ' hi' : '') + '" x="' + px(i).toFixed(1) + '" y="' + (BASE + 21) + '">' + iqv + '</text>';
+    }
+
+    host.innerHTML =
+      '<svg viewBox="0 0 ' + W + ' ' + H + '" class="hero-curve" role="img" aria-label="The IQ scale drawn as a normal distribution from 55 to 145">' +
+      '<defs><linearGradient id="hcgrad" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0%" stop-color="#4CBBD1" stop-opacity="0.30"/>' +
+      '<stop offset="100%" stop-color="#4CBBD1" stop-opacity="0.02"/>' +
+      '</linearGradient></defs>' +
+      '<path class="hc-fill" d="' + fill + '"/>' +
+      '<line class="hc-base" x1="' + PAD + '" y1="' + BASE + '" x2="' + (W - PAD) + '" y2="' + BASE + '"/>' +
+      ticks +
+      '<polyline class="hc-line" points="' + line.join(' ') + '"/>' +
+      '</svg>';
+  })();
+
   $('start').addEventListener('click', function () {
     el.intro.hidden = true; el.test.hidden = false; el.bar.hidden = false;
     buildRail(); render(); paintClock();
@@ -845,8 +959,11 @@
     var LET = ['A', 'B', 'C', 'D', 'E'];
     var review = Q.map(function (q, n) {
       var ok = resp[n] === 1;
-      var yours = answers[n] === null ? 'Not answered' : LET[answers[n]] + '. ' + q.o[answers[n]];
-      var right = LET[q.a] + '. ' + q.o[q.a];
+      // figure items use A/B/C/D as their option text, so don't print the letter twice
+      var isFig = !!q.figs;
+      var label = function (idx) { return isFig ? 'Option ' + LET[idx] : LET[idx] + '. ' + q.o[idx]; };
+      var yours = answers[n] === null ? 'Not answered' : label(answers[n]);
+      var right = label(q.a);
       var fig = q.figs ? ((q.stem && q.stem() ? '<div>' + q.stem() + '</div>' : '') + fourup(q.figs())) : (q.stem ? q.stem() : '');
       return '<details class="rev ' + (ok ? 'ok' : 'no') + '"><summary><span class="n">' + pad(n + 1) + '</span><span class="t">' + q.q + '</span><span class="m">' + (ok ? 'Correct' : 'Missed') + '</span></summary>' +
         '<div class="rev-body">' + fig +
